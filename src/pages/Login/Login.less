@@ -1,0 +1,46 @@
+.bg {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-image: url("../../assets/images/bg.jpg");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+
+  .LoginBox {
+    position: absolute;
+    width: 700px;
+    height: 400px;
+    background: rgba(255, 255, 255, .7);
+    right: 100px;
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 30px;
+    border-radius: 4px;
+
+    .left {
+      width: 30%;
+      height: 100%;
+      float: left;
+
+      img {
+        width: 100%;
+        height: auto;
+        margin-top: 70px;
+      }
+    }
+
+    .right {
+      width: 70%;
+      height: 100%;
+      float: left;
+
+      .forms {
+        margin-top: 80px;
+        .forget{margin-left: 10px}
+      }
+    }
+  }
+}

@@ -56,37 +56,7 @@ const getTab1Con = () => {
                     <Input className="inp"/><Input className="inp"/>
                 </Radio.Group>
             </div>
-            <div className="listItem">
-                <span className="listSpan">瑕疵情况</span>
-                <Radio.Group onChange={RadioChange} defaultValue="a">
-                    <Radio.Button value="a">全部</Radio.Button>
-                    <Radio.Button value="b">有瑕疵</Radio.Button>
-                    <Radio.Button value="c">无瑕疵</Radio.Button>
-                </Radio.Group>
-            </div>
-            <div className="listItem">
-                <span className="listSpan">支付渠道</span>
-                <Radio.Group onChange={RadioChange} defaultValue="a">
-                    <Radio.Button value="a">全部</Radio.Button>
-                    <Radio.Button value="b">苏宁</Radio.Button>
-                    <Radio.Button value="c">新意</Radio.Button>
-                </Radio.Group>
-            </div>
-            <div className="listItem">
-                <span className="listSpan">报价方式</span>
-                <Radio.Group onChange={RadioChange} defaultValue="a">
-                    <Radio style={radioStyle} value={"a"}>
-                        按利率 <span className="radioSpan">年利率不低于</span>
-                        <Input placeholder="%" />
-                        <span className="radioSpan">每十万手续费不低于</span>
-                        <Input placeholder="元" />
-                    </Radio>
-                    <Radio style={radioStyle} value={"b"}>
-                        按扣费 <span className="radioSpan">每十万扣费费不低于</span>
-                        <Input placeholder="元" />
-                    </Radio>
-                </Radio.Group>
-            </div>
+
         </div>
     )
 };
@@ -204,7 +174,7 @@ class App extends React.Component<any, any> {
         let {key, tableData} = this.state;
         return (
             <div className="App">
-                <NavBar/>
+                <NavBar {...this.props}/>
                 <div className="main">
 
                     <div className="searchContent">

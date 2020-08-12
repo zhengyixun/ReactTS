@@ -4,7 +4,8 @@ import './index.less';
 import 'antd/dist/antd.css'
 
 import App from './App';
-import Home from "./pages/Home/Home"
+import Home from "./pages/Home/Home";
+import Login  from "./pages/Login/Login";
 import * as serviceWorker from './serviceWorker';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 // @ts-ignore
@@ -24,6 +25,7 @@ const Routes = () => {
             {/*<React.StrictMode>*/}
                 <Switch>
                     <Route path='/Home' component={Home}/>
+                    <Route path='/Login' component={Login}/>
                     <Route path='/' component={App}/>
                 </Switch>
             {/*</React.StrictMode>*/}
