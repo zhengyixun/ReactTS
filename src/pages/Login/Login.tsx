@@ -1,5 +1,6 @@
 import React from "react";
 import "./Login.less";
+import {setCookie} from "../../utils/utils";
 import {Form, Input, Button, Checkbox} from 'antd';
 
 class Login extends React.Component<any, any> {
@@ -11,7 +12,9 @@ class Login extends React.Component<any, any> {
             },
             tailLayout: {
                 wrapperCol: {offset: 8, span: 16},
-
+            },
+            user:{
+                account:"",password:""
             }
         }
     }
@@ -20,20 +23,29 @@ class Login extends React.Component<any, any> {
     }
 
     onFinish = (values: any) => {
-        console.log('Success:', values);
+        console.log('Success:', values,this.state.user);
+        const {user} = this.state;
         const {history}=this.props;
         /**
          * TODO 存cookie
          * **/
 
+        setCookie('token','1asas');
+        setCookie('account',user.account);
         history.push("/")
     };
     onFinishFailed = (values: any) => {
         console.log('Failed:', values);
     };
-
+    //input的value值改变
+    valueChange(name:any,e:any){
+        let d = Object.assign({},this.state.user);
+        d[name] = e.target.value;
+        console.log(d);
+        this.setState({user:d});
+    };
     render(): React.ReactElement<any, string | React.JSXElementConstructor<any>> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
-        let {layout, tailLayout} = this.state;
+        let {layout, tailLayout,user } = this.state;
         return (
             <div className={"bg"}>
                 <div className="LoginBox">
@@ -47,11 +59,11 @@ class Login extends React.Component<any, any> {
                               onFinishFailed={this.onFinishFailed.bind(this)}
                         >
                             <Form.Item label="账号" name="username" rules={[{required: true, message: '请输入账号!'}]}>
-                                <Input/>
+                                <Input value={user.account} onChange={this.valueChange.bind(this,'account')}/>
                             </Form.Item>
 
                             <Form.Item label="密码" name="password" rules={[{required: true, message: '请输入密码!'}]}>
-                                <Input.Password/>
+                                <Input.Password  value={user.password} onChange={this.valueChange.bind(this,'password')}/>
                             </Form.Item>
 
                             <Form.Item {...tailLayout} name="remember" valuePropName="checked">

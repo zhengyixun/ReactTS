@@ -6,7 +6,7 @@ import {combineReducers} from 'redux'
 import defaultState from './state.js'
 // 一个reducer就是一个函数
 const pageTitle = (state = defaultState.pageTitle, action) => {
-    console.log(action,state)
+    // console.log(action,state)
     // 不同的action有不同的处理逻辑
     switch (action.type) {
         case 'SET_PAGE_TITLE':
