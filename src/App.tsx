@@ -16,16 +16,14 @@ class App extends React.Component<any, any> {
         // axios.get('/data').then((res: any) => {
         //     console.log(res)
         // })
+
     }
     render(): React.ReactElement<any, string | React.JSXElementConstructor<any>> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
-
         return (
             <div className="App">
                 <NavBar {...this.props}/>
                 <div className="main">
-
-                    <Home  {...this.props}/>
-
+                     <Home {...this.props} />
                 </div>
                 {/*测试redux*/}
                 {/*<Child />*/}

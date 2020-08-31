@@ -1,4 +1,7 @@
 import React from 'react';
+// @ts-ignore
+// import { Image } from 'antd';
+
 import "./Home.less"
 import {randomNum} from '../../utils/utils';
 //下拉加载 瀑布流
@@ -6,27 +9,21 @@ import Masonry from 'masonry-layout'  //实现瀑布流
 import imagesloaded from 'imagesloaded' //监听图片加载
 import InfiniteScroll from 'react-infinite-scroller' //下拉加载
 const arr = [
-    require('../../assets/images/Home/1.jpg'),
-    require('../../assets/images/Home/2.jpg'),
-    require('../../assets/images/Home/3.jpg'),
-    require('../../assets/images/Home/4.jpg'),
-    require('../../assets/images/Home/5.jpg'),
-    require('../../assets/images/Home/6.jpg'),
-    require('../../assets/images/Home/7.jpg'),
-    'https://dss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3437217665,1564280326&fm=26&gp=0.jpg',
-    require('../../assets/images/Home/8.jpg'),
-    require('../../assets/images/Home/9.jpg'),
-    require('../../assets/images/Home/10.jpg'),
-    require('../../assets/images/Home/11.jpg'),
-    require('../../assets/images/Home/12.jpg'),
-    require('../../assets/images/Home/6.jpg'),
-    require('../../assets/images/Home/13.jpg'),
-    'https://dss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2458227883,4095122505&fm=26&gp=0.jpg',
-    'https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1761250919,1896060533&fm=26&gp=0.jpg',
-    'https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2852083094,372235004&fm=26&gp=0.jpg',
-    'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2944705163,3932100810&fm=26&gp=0.jpg',
-    'https://img.zcool.cn/community/0170535e6d798ca80120a895397501.jpg@1280w_1l_2o_100sh.jpg',
-
+    {id:1,url:require('../../assets/images/Home/1.jpg')},
+    {id:2,url:require('../../assets/images/Home/2.jpg')},
+    {id:3,url:require('../../assets/images/Home/3.jpg')},
+    {id:4,url:require('../../assets/images/Home/4.jpg')},
+    {id:5,url:require('../../assets/images/Home/5.jpg')},
+    {id:6,url:require('../../assets/images/Home/6.jpg')},
+    {id:7,url:require('../../assets/images/Home/7.jpg')},
+    {id:8,url:require('../../assets/images/Home/8.jpg')},
+    {id:9,url:require('../../assets/images/Home/9.jpg')},
+    {id:10,url:require('../../assets/images/Home/10.jpg')},
+    {id:11,url:require('../../assets/images/Home/11.jpg')},
+    {id:12,url:require('../../assets/images/Home/12.jpg')},
+    {id:13,url:require('../../assets/images/Home/13.jpg')},
+    {id:10,url:require('../../assets/images/Home/10.jpg')},
+    {id:6,url:require('../../assets/images/Home/6.jpg')},
 ];
 const Loading = () => {
     return (<div className={'loader'}>
@@ -92,7 +89,14 @@ class Home extends React.Component<any, any> {
         // this.refs.pageBox.scrollTop = '0';
         // console.log( this.refs.pageBox.scrollTop=0)
         window.scrollTo(0,0)
-    }
+    };
+    toDetail(id:any){
+        const {history} = this.props;
+        history.push({
+            pathname:"/Detail",
+            state:{ id }
+        })
+    };
     render(): React.ReactElement<any, string | React.JSXElementConstructor<any>> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
         const { data, hasMore } = this.state;
         return (
@@ -111,8 +115,9 @@ class Home extends React.Component<any, any> {
                             {
                                 data.map((item:any, index:any) => {
                                     return (
-                                        <div key={index} className='imgBox'>
-                                            <img src={item} alt=''/>
+                                        <div key={index} className='imgBox' onClick={this.toDetail.bind(this,item.id)}>
+                                            <img src={item.url} alt=''/>
+                                            {/*<Image src={item} className={'img'} alt=''/>*/}
                                             <div className={'boxSon'}>
                                                 <div>
                                                     <span>相册: 2122121</span>

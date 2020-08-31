@@ -4,12 +4,14 @@ import {Button, Menu, Dropdown} from 'antd';
 import {DownOutlined} from '@ant-design/icons';
 import {getCookie, delCookie} from "../../utils/utils";
 import Logo from "./image/logo.png"
+import { connect } from 'react-redux';
+// 引入action
+import { setLoginState } from "../../store/action"
 
 class NavBar extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
         this.state = {
-            isLogin: false, //登录状态
             account: ""  //登陆账号
         }
     }
@@ -18,10 +20,10 @@ class NavBar extends React.Component<any, any> {
         let token = getCookie('token');
         if (token) {
             this.setState({
-                isLogin: true,
                 account: getCookie("account")
             })
         }
+        console.log('this.props',this.props)
     }
 
     //登录
@@ -46,8 +48,13 @@ class NavBar extends React.Component<any, any> {
             }
         })
     };
+    toIndex(){
+      const {history} = this.props;
+      history.push("/")
+    };
     render(): React.ReactElement<any, string | React.JSXElementConstructor<any>> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
-        let {isLogin, account} = this.state;
+        let { account} = this.state;
+        let { loginState } = this.props;
         const menu = (
             <Menu>
                 <Menu.Item key="0" onClick={this.LocationTo.bind(this,'account')}>
@@ -62,15 +69,16 @@ class NavBar extends React.Component<any, any> {
             <div className="NavBar">
                 <div className="con">
                     <img src={Logo} alt=""/>
-                    <div className="btn">首页</div>
+                    {loginState.toString()}
+                    <div className="btn" onClick={this.toIndex.bind(this)}>首页</div>
                     {
-                        !isLogin && <div className="right">
+                        !loginState && <div className="right">
                             <Button className="login" onClick={this.Login.bind(this)}>登录</Button>
                             <Button>注册</Button>
                         </div>
                     }
                     {
-                        isLogin && <div className="right">
+                        loginState && <div className="right">
                             <Dropdown overlay={menu} className={'dropdown'}>
                                 <span className="ant-dropdown-link" onClick={e => e.preventDefault()}>
                                     欢迎！ {account} <DownOutlined/>
@@ -84,5 +92,10 @@ class NavBar extends React.Component<any, any> {
         );
     }
 }
-
-export default NavBar;
+// mapStateToProps：将state映射到组件的props中
+const mapStateToProps = (state:any) => {
+    return {
+        loginState: state.loginState
+    }
+}
+export default connect(mapStateToProps)(NavBar);

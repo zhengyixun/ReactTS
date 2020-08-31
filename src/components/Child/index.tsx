@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from 'react-redux';
 // 引入action
-import { setPageTitle, setInfoList } from '../../store/action'
+import { setInfoList } from '../../store/action'
 class Child extends React.Component<any, any> {
     constructor(props:any){
         super(props);
@@ -11,9 +11,7 @@ class Child extends React.Component<any, any> {
     }
     componentDidMount(): void {
         // 组件传值
-        let { setPageTitle, setInfoList } = this.props;
-        // 触发setPageTitle action
-        setPageTitle('新的标题');
+        let {  setInfoList } = this.props;
 
         // 触发setInfoList action
         setInfoList();
@@ -52,9 +50,6 @@ const mapStateToProps = (state:any) => {
 // mapDispatchToProps:将dispatch映射到组件的props中
 const mapDispatchToProps = (dispatch:any, ownProps:any) => {
     return {
-        setPageTitle (data:any) {
-            dispatch(setPageTitle(data))
-        },
         setInfoList (data:any) {
             dispatch(setInfoList(data))
         }

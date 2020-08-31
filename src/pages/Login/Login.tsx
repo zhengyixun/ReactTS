@@ -2,6 +2,9 @@ import React from "react";
 import "./Login.less";
 import {setCookie} from "../../utils/utils";
 import {Form, Input, Button, Checkbox} from 'antd';
+import { connect } from 'react-redux';
+// 引入action
+import { setLoginState } from "../../store/action"
 
 class Login extends React.Component<any, any> {
     constructor(props: any) {
@@ -20,18 +23,19 @@ class Login extends React.Component<any, any> {
     }
 
     componentDidMount(): void {
+
     }
 
     onFinish = (values: any) => {
         console.log('Success:', values,this.state.user);
         const {user} = this.state;
-        const {history}=this.props;
+        const {history,setLoginState}=this.props;
         /**
-         * TODO 存cookie
+         * TODO 存cookie 修改redux中的登陆状态
          * **/
-
         setCookie('token','1asas');
         setCookie('account',user.account);
+        setLoginState(true);
         history.push("/")
     };
     onFinishFailed = (values: any) => {
@@ -41,7 +45,6 @@ class Login extends React.Component<any, any> {
     valueChange(name:any,e:any){
         let d = Object.assign({},this.state.user);
         d[name] = e.target.value;
-        console.log(d);
         this.setState({user:d});
     };
     render(): React.ReactElement<any, string | React.JSXElementConstructor<any>> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined {
@@ -82,5 +85,22 @@ class Login extends React.Component<any, any> {
         );
     }
 }
+// mapStateToProps：将state映射到组件的props中
+const mapStateToProps = (state:any) => {
+    return {
+        loginState: state.loginState
+    }
+}
 
-export default Login;
+// mapDispatchToProps：将dispatch映射到组件的props中
+const mapDispatchToProps = (dispatch:any, ownProps:any) => {
+    return {
+        setLoginState (data:any) {
+            // 如果不懂这里的逻辑可查看前面对redux-thunk的介绍
+            dispatch(setLoginState(data))
+
+        }
+
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
