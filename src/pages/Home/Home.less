@@ -1,7 +1,7 @@
 @import "../../common.less";
 
 .content{
-  width: @contentWidth;margin: 0 auto;height: 100%;
+  width: 100%;margin: 0 auto;height: 100%;
   .toTop{
     position: fixed;width: 40px;height: 40px;right: 50px;bottom: 50px;cursor: pointer;
     img{
@@ -11,12 +11,14 @@
 }
 .pages_pinterest{
   padding-top: 10px;
-  width: 1198px;
   height: 100%;
   margin: 0 auto;
   overflow: auto;
   .pages_hoc{
     margin: 0 auto;
+    .pages_hocx{
+      width: @contentWidth;overflow: hidden;height: 100%;margin: 0 auto;position: relative;
+    }
     .imgBox{
       width: 292px;cursor: pointer;
       margin-bottom: 10px;overflow: hidden;position: relative;
@@ -48,6 +50,9 @@
     }
   }
   .loader{
-
+    height: 80px;padding-top: 10px;
+    .Imgs{
+      font-size: 30px;
+    }
   }
 }

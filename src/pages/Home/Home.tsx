@@ -1,33 +1,18 @@
 import React from 'react';
+import ReactDom from 'react-dom'
 // @ts-ignore
-// import { Image } from 'antd';
-
+import { LoadingOutlined} from '@ant-design/icons';
+import axios from 'axios';
 import "./Home.less"
 import {randomNum} from '../../utils/utils';
 //下拉加载 瀑布流
 import Masonry from 'masonry-layout'  //实现瀑布流
 import imagesloaded from 'imagesloaded' //监听图片加载
 import InfiniteScroll from 'react-infinite-scroller' //下拉加载
-const arr = [
-    {id:1,url:require('../../assets/images/Home/1.jpg')},
-    {id:2,url:require('../../assets/images/Home/2.jpg')},
-    {id:3,url:require('../../assets/images/Home/3.jpg')},
-    {id:4,url:require('../../assets/images/Home/4.jpg')},
-    {id:5,url:require('../../assets/images/Home/5.jpg')},
-    {id:6,url:require('../../assets/images/Home/6.jpg')},
-    {id:7,url:require('../../assets/images/Home/7.jpg')},
-    {id:8,url:require('../../assets/images/Home/8.jpg')},
-    {id:9,url:require('../../assets/images/Home/9.jpg')},
-    {id:10,url:require('../../assets/images/Home/10.jpg')},
-    {id:11,url:require('../../assets/images/Home/11.jpg')},
-    {id:12,url:require('../../assets/images/Home/12.jpg')},
-    {id:13,url:require('../../assets/images/Home/13.jpg')},
-    {id:10,url:require('../../assets/images/Home/10.jpg')},
-    {id:6,url:require('../../assets/images/Home/6.jpg')},
-];
 const Loading = () => {
     return (<div className={'loader'}>
-
+        <LoadingOutlined  className={'Imgs'}/><br/>
+        <span>正在加载</span>
     </div>)
 }
 class Home extends React.Component<any, any> {
@@ -35,7 +20,7 @@ class Home extends React.Component<any, any> {
         super(props);
         this.state = {
             height: [],
-            data: arr,
+            data: [],
             hasMore: true, // 是否开启下拉加载
         }
     }
@@ -49,9 +34,29 @@ class Home extends React.Component<any, any> {
         this.setState({
             height: arr
         });
-        this.imagesOnload()
+        this.getList();
     }
-
+    getList=()=>{
+        axios.post('/getList',{
+            current: 10,page: 1
+        }).then((res: any) => {
+            if(res.status === 200){
+                console.log(res.data)
+                let arr:any = [];
+                res.data && res.data.map((item:any) => {
+                    arr.push({
+                        id: item.id,url: item.url
+                    })
+                    return item.id
+                })
+                this.setState({
+                    data: arr
+                })
+            }
+        }).then(()=>{
+            this.imagesOnload()
+        })
+    };
     //图片懒加载
     imagesOnload = () => {
         const elLoad = imagesloaded('.pages_hoc');  //获取下拉加载里面的第一个盒子
@@ -77,7 +82,7 @@ class Home extends React.Component<any, any> {
         const {data} = this.state;
         setTimeout(() => {
             this.setState({
-                data: [...data, ...arr] //拼接每次加载的数据 arr是我自定义的数据
+                data: [...data, ...this.state.data] //拼接每次加载的数据 arr是我自定义的数据
             }, () => {
                 this.imagesOnload() // 每次获取完数据 触发
             })
@@ -85,10 +90,9 @@ class Home extends React.Component<any, any> {
 
     };
     toTop(){
-        // 第一种方式
-        // this.refs.pageBox.scrollTop = '0';
-        // console.log( this.refs.pageBox.scrollTop=0)
-        window.scrollTo(0,0)
+        let d = document.getElementById('pageBox');
+        // @ts-ignore
+        ReactDom.findDOMNode(d)['scrollTop'] = 0
     };
     toDetail(id:any){
         const {history} = this.props;
@@ -101,7 +105,7 @@ class Home extends React.Component<any, any> {
         const { data, hasMore } = this.state;
         return (
             <div className={'content'}>
-                <div className={'pages_pinterest scrollBar'} ref='pageBox'>
+                <div className={'pages_pinterest scrollBar'} ref={'pageBox'} id={'pageBox'}>
                     {/* 下拉加载 */}
                     <InfiniteScroll
                         initialLoad={false} // 不让它进入直接加载
@@ -112,26 +116,29 @@ class Home extends React.Component<any, any> {
                         loader={Loading()}
                     >
                         <div className="pages_hoc">
-                            {
-                                data.map((item:any, index:any) => {
-                                    return (
-                                        <div key={index} className='imgBox' onClick={this.toDetail.bind(this,item.id)}>
-                                            <img src={item.url} alt=''/>
-                                            {/*<Image src={item} className={'img'} alt=''/>*/}
-                                            <div className={'boxSon'}>
-                                                <div>
-                                                    <span>相册: 2122121</span>
-                                                    <span>后期: 蒙汜</span>
-                                                </div>
-                                                <div>
-                                                    <span>相册: 汤谷</span>
-                                                    <span>后期: 蒙汜</span>
+                            <div className={'pages_hocx'}>
+                                {
+                                    data.map((item:any, index:any) => {
+                                        return (
+                                            <div key={index} className='imgBox' onClick={this.toDetail.bind(this,item.id)}>
+                                                <img src={item.url} alt=''/>
+                                                {/*<Image src={item} className={'img'} alt=''/>*/}
+                                                <div className={'boxSon'}>
+                                                    <div>
+                                                        <span>相册: 2122121</span>
+                                                        <span>后期: 蒙汜</span>
+                                                    </div>
+                                                    <div>
+                                                        <span>相册: 汤谷</span>
+                                                        <span>后期: 蒙汜</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    )
-                                })
-                            }
+                                        )
+                                    })
+                                }
+                            </div>
+
                         </div>
                     </InfiniteScroll>
                 </div>

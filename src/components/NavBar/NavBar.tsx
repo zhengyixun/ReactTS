@@ -6,7 +6,7 @@ import {getCookie, delCookie} from "../../utils/utils";
 import Logo from "./image/logo.png"
 import { connect } from 'react-redux';
 // 引入action
-import { setLoginState } from "../../store/action"
+// import { setLoginState } from "../../store/action"
 
 class NavBar extends React.Component<any, any> {
     constructor(props: any) {
@@ -23,7 +23,6 @@ class NavBar extends React.Component<any, any> {
                 account: getCookie("account")
             })
         }
-        console.log('this.props',this.props)
     }
 
     //登录
@@ -69,7 +68,7 @@ class NavBar extends React.Component<any, any> {
             <div className="NavBar">
                 <div className="con">
                     <img src={Logo} alt=""/>
-                    {loginState.toString()}
+                    {/*{loginState.toString()}*/}
                     <div className="btn" onClick={this.toIndex.bind(this)}>首页</div>
                     {
                         !loginState && <div className="right">
@@ -80,10 +79,10 @@ class NavBar extends React.Component<any, any> {
                     {
                         loginState && <div className="right">
                             <Dropdown overlay={menu} className={'dropdown'}>
-                                <span className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                                <span className="ant-dropdown-link cps" onClick={e => e.preventDefault()}>
                                     欢迎！ {account} <DownOutlined/>
                                 </span>
-                            </Dropdown>,
+                            </Dropdown>
                         </div>
                     }
 

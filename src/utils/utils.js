@@ -5,15 +5,13 @@ export const setCookie = (name, value, day = 30) => {
     document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
 };
 //读cookie
-export const getCookie = (cookiename) => {
-    let cookiestring = document.cookie;
-    let start = cookiestring.indexOf(cookiename + '= ');
-    if (start === -1)   //   找不到
+export const getCookie = (name) => {
+    let arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+    arr = document.cookie.match(reg)
+    if(arr)
+        return unescape(arr[2]);
+    else
         return null;
-    start += cookiename.length + 1;
-    let end = cookiestring.indexOf("; ", start);
-    if (end === -1) return unescape(cookiestring.substring(start));
-    return unescape(cookiestring.substring(start, end));
 };
 //删cookie
 export const delCookie = (name) => {

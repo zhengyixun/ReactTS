@@ -1,8 +1,9 @@
 import React from "react";
 import "./Login.less";
 import {setCookie} from "../../utils/utils";
-import {Form, Input, Button, Checkbox} from 'antd';
+import {Form, Input, Button, Checkbox, Image,message} from 'antd';
 import { connect } from 'react-redux';
+import axios from 'axios';
 // 引入action
 import { setLoginState } from "../../store/action"
 
@@ -17,7 +18,7 @@ class Login extends React.Component<any, any> {
                 wrapperCol: {offset: 8, span: 16},
             },
             user:{
-                account:"",password:""
+                account:"admin",password:"123456"
             }
         }
     }
@@ -30,13 +31,30 @@ class Login extends React.Component<any, any> {
         console.log('Success:', values,this.state.user);
         const {user} = this.state;
         const {history,setLoginState}=this.props;
-        /**
-         * TODO 存cookie 修改redux中的登陆状态
-         * **/
-        setCookie('token','1asas');
-        setCookie('account',user.account);
-        setLoginState(true);
-        history.push("/")
+        axios.post('/login',{
+            account:user.account,
+            password:user.password
+        }).then(e=>{
+            console.log(e);
+            if(e.status === 200){
+                let da = e.data;
+                if(da.code === -1){
+                    // alert(da.msg)
+                    message.error(da.msg,1.5)
+                }else{
+                    // alert(da.msg)
+                    message.success(da.msg,1.5)
+                    /**
+                     * TODO 存cookie 修改redux中的登陆状态
+                     * **/
+                    setCookie('token','1asas');
+                    setCookie('account',user.account);
+                    setLoginState(true);
+                    history.push("/")
+                }
+            }
+        })
+
     };
     onFinishFailed = (values: any) => {
         console.log('Failed:', values);
@@ -51,6 +69,12 @@ class Login extends React.Component<any, any> {
         let {layout, tailLayout,user } = this.state;
         return (
             <div className={"bg"}>
+                <Image className={'imgs'}
+                    src={require('../../assets/images/bg.jpg')}
+                    placeholder={
+                        <Image className={'imgs'} src={require('../../assets/images/bg_small.jpg')}/>
+                    }
+                />
                 <div className="LoginBox">
                     <div className="left">
                         <img src={require("../../assets/images/logo.png")} alt=""/>
@@ -61,7 +85,7 @@ class Login extends React.Component<any, any> {
                               onFinish={this.onFinish.bind(this)}
                               onFinishFailed={this.onFinishFailed.bind(this)}
                         >
-                            <Form.Item label="账号" name="username" rules={[{required: true, message: '请输入账号!'}]}>
+                            <Form.Item label="账号" name="username" rules={[{required: true, message: '请输入账号!'}]} >
                                 <Input value={user.account} onChange={this.valueChange.bind(this,'account')}/>
                             </Form.Item>
 
